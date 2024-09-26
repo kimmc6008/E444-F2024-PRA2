@@ -1,12 +1,45 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flasky{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
-    <h1>Hello Minchan!</h1>
+    <h1>Hello, {% if name %}{{ name }}{% else %}Stranger{% endif %}!</h1>
+    {% if email and 'utoronto' in email %}
+        <h1>Your UofT email is {{ email }}</h1>
+    {% elif name %}
+        <h1>Please use your UofT email.</h1>
+    {% endif %}
 </div>
 
-<p>The local date and time is {{ moment(current_time).format('LLLL') }}.</p>
-<p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
+<!-- Error Messages for the Form -->
+<form method="POST" action="/">
+    {{ form.hidden_tag() }}
+    
+    <!-- Name Field -->
+    <div class="form-group">
+        <label for="name">What is your name?</label>
+        {{ form.name(class="form-control", placeholder="Enter your name") }}
+        {% if form.name.errors %}
+            <div class="invalid-feedback d-block">
+                {{ form.name.errors[0] }}
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Email Field -->
+    <div class="form-group">
+        <label for="email">What is your UofT Email address?</label>
+        {{ form.email(class="form-control {{ 'is-invalid' if form.email.errors else '' }}", placeholder="Enter your UofT email") }}
+        {% if form.email.errors %}
+            <div class="invalid-feedback d-block">
+                {{ form.email.errors[0] }}
+            </div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 {% endblock %}
-
