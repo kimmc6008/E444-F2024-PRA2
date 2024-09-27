@@ -30,7 +30,7 @@ def index():
             print("check")
             flash('Looks like you have changed your email!')
         
-        if 'utoronto' in form.email.data:
+        if 'mail.utoronto.ca' in form.email.data:
             session['name'] = form.name.data
             session['email'] = form.email.data
         else:
